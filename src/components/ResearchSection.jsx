@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { Activity, Brain, CheckCircle2, Layers, ScanLine } from 'lucide-react';
 import { RESEARCH_WORKFLOW } from '../data/profile';
 import { useReveal } from '../hooks/useReveal';
@@ -27,112 +28,103 @@ export default function ResearchSection() {
   const activeStage = RESEARCH_WORKFLOW[activeIndex];
 
   return (
-    <section id="research" className="section">
-      <div ref={ref} className={`container reveal ${isVisible ? 'is-visible' : ''}`}>
-        <div className="section-header">
-          <span className="section-kicker">04 // Research &amp; Development</span>
-          <h2 className="section-title">
+    <section id="research" className="py-5">
+      <Container ref={ref} className={`py-3 reveal ${isVisible ? 'is-visible' : ''}`}>
+        <div className="mb-4" style={{ maxWidth: 720 }}>
+          <div className="font-monospace text-info text-uppercase small mb-2">
+            04 // Research &amp; Development
+          </div>
+          <h2 className="display-6 font-display fw-bold mb-2">
             Parkinson&apos;s Disease Classification via Multimodal MRI &amp; DaTSCAN Analysis
           </h2>
-          <p className="section-subtitle">
+          <p className="text-body-secondary">
             Interactive overview of the incremental multimodal deep learning architecture designed to
             preserve prior knowledge across evolving clinical classifications.
           </p>
         </div>
 
-        <div className="card rd-shell">
-          <div className="rd-pillars">
-            {PILLARS.map((pillar) => {
-              const Icon = pillar.icon;
-              return (
-                <div key={pillar.title} className="rd-pillar">
-                  <div className="rd-pillar-title">
-                    <Icon size={17} color="var(--accent-cyan)" />
-                    <span>{pillar.title}</span>
-                  </div>
-                  <p className="rd-pillar-desc">{pillar.desc}</p>
-                </div>
-              );
-            })}
-          </div>
+        <Card className="rb-card rb-card-featured rounded-4">
+          <Card.Body className="p-4">
+            <Row xs={1} md={3} className="g-3 mb-4">
+              {PILLARS.map((pillar) => {
+                const Icon = pillar.icon;
+                return (
+                  <Col key={pillar.title}>
+                    <div className="p-3 rounded-3 border bg-dark bg-opacity-50 h-100">
+                      <div className="d-flex align-items-center gap-2 fw-semibold text-light mb-1">
+                        <Icon size={17} className="text-info" />
+                        <span>{pillar.title}</span>
+                      </div>
+                      <p className="small text-body-secondary mb-0">{pillar.desc}</p>
+                    </div>
+                  </Col>
+                );
+              })}
+            </Row>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '10px',
-              marginBottom: '14px',
-            }}
-          >
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.8rem',
-                color: 'var(--accent-indigo)',
-              }}
-            >
-              <Brain size={16} />
-              <span>INTERACTIVE RESEARCH WORKFLOW — SELECT A STAGE</span>
-            </div>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.76rem',
-                color: 'var(--text-muted)',
-              }}
-            >
-              Stage {activeStage.step} of 04
-            </span>
-          </div>
-
-          <div className="workflow-pipeline" role="tablist" aria-label="Research workflow stages">
-            {RESEARCH_WORKFLOW.map((stage, idx) => (
-              <button
-                key={stage.id}
-                type="button"
-                role="tab"
-                aria-selected={idx === activeIndex}
-                className={`workflow-node ${idx === activeIndex ? 'active' : ''}`}
-                onClick={() => setActiveIndex(idx)}
-              >
-                <div className="workflow-step-num">STAGE {stage.step}</div>
-                <div className="workflow-node-title">{stage.shortTitle}</div>
-              </button>
-            ))}
-          </div>
-
-          <div className="workflow-detail-panel" role="tabpanel">
-            <div className="workflow-detail-copy">
-              <div
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.76rem',
-                  color: 'var(--accent-cyan)',
-                  marginBottom: '6px',
-                }}
-              >
-                STAGE {activeStage.step} // DETAILS
+            <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+              <div className="font-monospace small text-info d-inline-flex align-items-center gap-2">
+                <Brain size={16} />
+                <span>INTERACTIVE RESEARCH WORKFLOW — SELECT A STAGE</span>
               </div>
-              <h3 className="workflow-detail-title">{activeStage.title}</h3>
-              <p className="workflow-detail-desc">{activeStage.description}</p>
+              <span className="font-monospace small text-secondary">
+                Stage {activeStage.step} of 04
+              </span>
             </div>
 
-            <div className="workflow-highlights">
-              {activeStage.highlights.map((item) => (
-                <div key={item} className="workflow-highlight-item">
-                  <CheckCircle2 size={15} color="var(--accent-cyan)" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+            <Row xs={1} sm={2} lg={4} className="g-2 mb-3" role="tablist">
+              {RESEARCH_WORKFLOW.map((stage, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <Col key={stage.id}>
+                    <Button
+                      variant={isActive ? 'outline-info' : 'dark'}
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => setActiveIndex(idx)}
+                      className={`w-100 text-start p-3 rounded-3 border ${
+                        isActive ? 'bg-info bg-opacity-10 border-info' : ''
+                      }`}
+                    >
+                      <div className="font-monospace text-info" style={{ fontSize: '0.72rem' }}>
+                        STAGE {stage.step}
+                      </div>
+                      <div className="font-display fw-semibold text-light">{stage.shortTitle}</div>
+                    </Button>
+                  </Col>
+                );
+              })}
+            </Row>
+
+            <Card className="bg-dark bg-opacity-75 border border-info border-opacity-25 rounded-3">
+              <Card.Body className="p-4">
+                <Row className="align-items-center g-4">
+                  <Col lg={7}>
+                    <div className="font-monospace text-info small mb-1">
+                      STAGE {activeStage.step} // DETAILS
+                    </div>
+                    <h3 className="h5 font-display fw-bold mb-2">{activeStage.title}</h3>
+                    <p className="text-body-secondary small mb-0">{activeStage.description}</p>
+                  </Col>
+                  <Col lg={5}>
+                    <ListGroup className="gap-2">
+                      {activeStage.highlights.map((item) => (
+                        <ListGroup.Item
+                          key={item}
+                          className="rounded-2 bg-info bg-opacity-10 border border-info border-opacity-25 text-light small d-flex align-items-center gap-2 py-2"
+                        >
+                          <CheckCircle2 size={15} className="text-info flex-shrink-0" />
+                          <span>{item}</span>
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Card.Body>
+        </Card>
+      </Container>
     </section>
   );
 }

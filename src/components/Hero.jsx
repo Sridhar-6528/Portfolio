@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Badge, Button, Card, Col, Container, Image, Row, Stack } from 'react-bootstrap';
 import { ArrowRight, Code2, Download, Github, Mail, MapPin } from 'lucide-react';
 import { PROFILE } from '../data/profile';
 
@@ -6,107 +7,146 @@ export default function Hero() {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <section id="top" className="hero">
-      <div className="container hero-grid">
-        <div>
-          <div className="hero-status">
-            <span className="status-dot" aria-hidden="true" />
-            <span>M.Sc Software Systems · Kongu Engineering College</span>
-          </div>
-
-          <h1 className="hero-title">
-            <span className="hero-title-accent">{PROFILE.name}</span>
-          </h1>
-
-          <p className="hero-role">{PROFILE.headlineRole}</p>
-
-          <p className="hero-tagline">{PROFILE.tagline}</p>
-
-          <div className="hero-ctas">
-            <a href="#projects" className="btn btn-primary">
-              View Projects
-              <ArrowRight size={17} />
-            </a>
-            <a
-              href={PROFILE.resumeFile}
-              download={PROFILE.resumeDownloadName}
-              className="btn btn-secondary"
+    <section id="top" className="py-5">
+      <Container className="py-lg-4">
+        <Row className="align-items-center g-5">
+          <Col lg={7}>
+            <Badge
+              bg="info"
+              text="info"
+              className="bg-opacity-10 border border-info border-opacity-25 rounded-pill px-3 py-2 mb-3 font-monospace fw-medium d-inline-flex align-items-center gap-2"
             >
-              <Download size={17} />
-              Download Resume
-            </a>
-            <a href="#contact" className="btn btn-ghost">
-              <Mail size={17} />
-              Contact Me
-            </a>
-          </div>
+              <span
+                className="rounded-circle bg-success d-inline-block"
+                style={{ width: 7, height: 7 }}
+                aria-hidden="true"
+              />
+              M.Sc Software Systems · Kongu Engineering College
+            </Badge>
 
-          <div className="hero-socials">
-            <a
-              href={PROFILE.contact.github}
-              target="_blank"
-              rel="noreferrer"
-              className="social-pill"
-            >
-              <Github size={15} />
-              <span>github.com/{PROFILE.contact.githubHandle}</span>
-            </a>
-            <a
-              href={PROFILE.contact.leetcode}
-              target="_blank"
-              rel="noreferrer"
-              className="social-pill"
-            >
-              <Code2 size={15} />
-              <span>LeetCode · 150+ Solved</span>
-            </a>
-            <span className="social-pill">
-              <MapPin size={15} />
-              <span>{PROFILE.contact.shortLocation}</span>
-            </span>
-          </div>
-        </div>
+            <h1 className="display-3 fw-bold font-display mb-2">
+              <span className="text-gradient">{PROFILE.name}</span>
+            </h1>
 
-        <aside className="card hero-profile-card" aria-label="Profile overview and portrait">
-          <div className={`profile-frame ${!imgError ? 'has-photo' : ''}`}>
-            {!imgError ? (
-              <>
-                <img
-                  src={PROFILE.photo}
-                  alt={`Portrait of ${PROFILE.name}`}
-                  className="profile-photo"
-                  loading="eager"
-                  decoding="async"
-                  onError={() => setImgError(true)}
-                />
-                <div className="profile-photo-scrim" aria-hidden="true" />
-                <div className="profile-photo-caption">
-                  <span className="profile-caption-name">{PROFILE.name}</span>
-                  <span className="profile-caption-sub">M.Sc Software Systems</span>
+            <p className="h4 font-display fw-semibold text-light mb-3">{PROFILE.headlineRole}</p>
+
+            <p className="lead text-body-secondary mb-4" style={{ maxWidth: '52ch' }}>
+              {PROFILE.tagline}
+            </p>
+
+            <Stack direction="horizontal" gap={2} className="flex-wrap mb-4">
+              <Button
+                as="a"
+                href="#projects"
+                className="btn-cyan d-inline-flex align-items-center gap-2 px-4 py-2"
+              >
+                View Projects
+                <ArrowRight size={17} />
+              </Button>
+              <Button
+                as="a"
+                href={PROFILE.resumeFile}
+                download={PROFILE.resumeDownloadName}
+                variant="outline-light"
+                className="d-inline-flex align-items-center gap-2 px-3 py-2"
+              >
+                <Download size={17} />
+                Download Resume
+              </Button>
+              <Button
+                as="a"
+                href="#contact"
+                variant="outline-secondary"
+                className="d-inline-flex align-items-center gap-2 px-3 py-2 text-light"
+              >
+                <Mail size={17} />
+                Contact Me
+              </Button>
+            </Stack>
+
+            <Stack direction="horizontal" gap={2} className="flex-wrap">
+              <Button
+                as="a"
+                href={PROFILE.contact.github}
+                target="_blank"
+                rel="noreferrer"
+                variant="dark"
+                size="sm"
+                className="border rounded-pill px-3 py-1 d-inline-flex align-items-center gap-2 text-secondary"
+              >
+                <Github size={14} />
+                github.com/{PROFILE.contact.githubHandle}
+              </Button>
+              <Button
+                as="a"
+                href={PROFILE.contact.leetcode}
+                target="_blank"
+                rel="noreferrer"
+                variant="dark"
+                size="sm"
+                className="border rounded-pill px-3 py-1 d-inline-flex align-items-center gap-2 text-secondary"
+              >
+                <Code2 size={14} />
+                LeetCode · 150+ Solved
+              </Button>
+              <Badge
+                bg="dark"
+                className="border rounded-pill px-3 py-2 fw-normal text-secondary d-inline-flex align-items-center gap-2"
+              >
+                <MapPin size={14} />
+                {PROFILE.contact.shortLocation}
+              </Badge>
+            </Stack>
+          </Col>
+
+          <Col lg={5}>
+            <Card className="rb-card rounded-4 shadow-lg mx-auto" style={{ maxWidth: 440 }}>
+              <Card.Body className="p-3 p-sm-4">
+                <div className="profile-photo-frame rounded-3 mb-3 d-flex align-items-center justify-content-center">
+                  {!imgError ? (
+                    <>
+                      <Image
+                        src={PROFILE.photo}
+                        alt={`Portrait of ${PROFILE.name}`}
+                        className="profile-photo-img"
+                        onError={() => setImgError(true)}
+                      />
+                      <div className="profile-photo-scrim" aria-hidden="true" />
+                      <div
+                        className="position-absolute bottom-0 start-0 end-0 m-2 px-3 py-2 rounded-2 border d-flex justify-content-between align-items-center"
+                        style={{ background: 'rgba(7, 11, 18, 0.78)', backdropFilter: 'blur(8px)' }}
+                      >
+                        <span className="font-display fw-bold small text-light">{PROFILE.name}</span>
+                        <span className="font-monospace text-info" style={{ fontSize: '0.72rem' }}>
+                          M.Sc Software Systems
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center p-4">
+                      <div className="display-6 fw-bold text-info mb-1">{PROFILE.initials}</div>
+                      <div className="small text-secondary">{PROFILE.name}</div>
+                    </div>
+                  )}
                 </div>
-              </>
-            ) : (
-              <>
-                <div className="profile-frame-grid" aria-hidden="true" />
-                <div className="profile-avatar-ring">
-                  <span className="profile-avatar-initials">{PROFILE.initials}</span>
-                </div>
-                <p className="profile-placeholder-title">{PROFILE.name}</p>
-                <p className="profile-placeholder-note">M.Sc Software Systems</p>
-              </>
-            )}
-          </div>
 
-          <div className="profile-metrics">
-            {PROFILE.quickStats.map((stat) => (
-              <div key={stat.label} className="metric-chip">
-                <div className="metric-chip-value">{stat.value}</div>
-                <div className="metric-chip-label">{stat.detail}</div>
-              </div>
-            ))}
-          </div>
-        </aside>
-      </div>
+                <Row xs={2} className="g-2">
+                  {PROFILE.quickStats.map((stat) => (
+                    <Col key={stat.label}>
+                      <div className="p-2 px-3 rounded-3 border bg-dark bg-opacity-50 h-100">
+                        <div className="font-display fw-bold small text-light">{stat.value}</div>
+                        <div className="text-secondary" style={{ fontSize: '0.74rem' }}>
+                          {stat.detail}
+                        </div>
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </section>
   );
 }

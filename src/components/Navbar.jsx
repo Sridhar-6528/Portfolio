@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Download, Menu, X } from 'lucide-react';
+import { Badge, Button, Container, Nav, Navbar as BsNavbar } from 'react-bootstrap';
+import { Download } from 'lucide-react';
 import { PROFILE } from '../data/profile';
 
 const NAV_ITEMS = [
@@ -13,7 +14,7 @@ const NAV_ITEMS = [
 ];
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [activeId, setActiveId] = useState('about');
 
   useEffect(() => {
@@ -23,9 +24,7 @@ export default function Navbar() {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
+          if (entry.isIntersecting) setActiveId(entry.target.id);
         }
       },
       { rootMargin: '-35% 0px -55% 0px' }
@@ -35,82 +34,54 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  const handleNavClick = () => {
-    setMenuOpen(false);
-  };
-
   return (
-    <header className="navbar">
-      <div className="container navbar-inner">
-        <a href="#top" className="brand" aria-label="Sridhar S Home">
-          <span className="brand-mark">{PROFILE.initials}</span>
+    <BsNavbar
+      sticky="top"
+      expand="lg"
+      variant="dark"
+      expanded={expanded}
+      onToggle={setExpanded}
+      className="glass-nav border-bottom py-2"
+    >
+      <Container>
+        <BsNavbar.Brand href="#top" className="d-flex align-items-center gap-2 font-display fw-bold">
+          <Badge bg="info" text="dark" className="font-monospace px-2 py-2 rounded-3">
+            {PROFILE.initials}
+          </Badge>
           <span>{PROFILE.name}</span>
-        </a>
+        </BsNavbar.Brand>
 
-        <nav aria-label="Primary Navigation">
-          <ul className="nav-links">
+        <BsNavbar.Toggle aria-controls="main-navbar-nav" />
+
+        <BsNavbar.Collapse id="main-navbar-nav">
+          <Nav className="mx-auto gap-lg-1 my-2 my-lg-0">
             {NAV_ITEMS.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  className={`nav-link ${activeId === item.id ? 'active' : ''}`}
-                >
-                  {item.label}
-                </a>
-              </li>
+              <Nav.Link
+                key={item.id}
+                href={`#${item.id}`}
+                active={activeId === item.id}
+                onClick={() => setExpanded(false)}
+                className="px-3 rounded-2"
+              >
+                {item.label}
+              </Nav.Link>
             ))}
-          </ul>
-        </nav>
+          </Nav>
 
-        <div className="nav-actions">
-          <a
+          <Button
+            as="a"
             href={PROFILE.resumeFile}
             download={PROFILE.resumeDownloadName}
-            className="btn btn-secondary nav-desktop-cta"
-            style={{ padding: '8px 14px', fontSize: '0.86rem' }}
+            variant="outline-info"
+            size="sm"
+            className="d-inline-flex align-items-center gap-2 px-3 py-2 fw-semibold"
+            onClick={() => setExpanded(false)}
           >
             <Download size={15} />
             Resume
-          </a>
-
-          <button
-            type="button"
-            className="mobile-menu-btn"
-            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((prev) => !prev)}
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
-
-      {menuOpen && (
-        <div className="mobile-drawer" role="dialog" aria-label="Mobile Navigation">
-          <div className="mobile-drawer-links">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                className="mobile-drawer-link"
-                onClick={handleNavClick}
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-          <a
-            href={PROFILE.resumeFile}
-            download={PROFILE.resumeDownloadName}
-            className="btn btn-primary"
-            style={{ width: '100%' }}
-            onClick={handleNavClick}
-          >
-            <Download size={16} />
-            Download Resume (PDF)
-          </a>
-        </div>
-      )}
-    </header>
+          </Button>
+        </BsNavbar.Collapse>
+      </Container>
+    </BsNavbar>
   );
 }

@@ -11,9 +11,9 @@ import Footer from './components/Footer';
 
 export default function App() {
   return (
-    <div className="app-shell">
+    <div className="position-relative min-vh-100">
       <div className="app-bg" aria-hidden="true" />
-      <a href="#main-content" className="skip-link">
+      <a href="#main-content" className="visually-hidden-focusable position-absolute top-0 start-0 m-2 btn btn-info">
         Skip to content
       </a>
 
